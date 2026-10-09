@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Foodie Express</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="sec.css">
+</head>
+
+<body>
+
+<header id="mainHeader">
+  <div class="container header-content">
+
+    <div class="logo">
+      <span class="logo-badge">Est. 2025</span>
+      <h1>Foodie Express</h1>
+      <p>Curated cuisine, delivered with care</p>
+    </div>
+
+    <button class="cart-btn" onclick="toggleCart()">
+      <span class="cart-icon">🛒</span>
+      Cart (<span id="cart-count">0</span>)
+    </button>
+
+  </div>
+</header>
+
+<div class="container">
+
+<section class="hero">
+
+  <div class="hero-overlay"></div>
+
+  <div class="offer-slider">
+
+    <div class="offer-slide active">
+      <span class="slide-tag">Exclusive Offer</span>
+      <h2>50% OFF On First Order</h2>
+      <p>
+        Indulge in chef-crafted meals at half the price.
+        A welcome gift reserved for new patrons.
+      </p>
+    </div>
+
+    <div class="offer-slide">
+      <span class="slide-tag">Complimentary</span>
+      <h2>Free Delivery Above ₹299</h2>
+      <p>
+        Savour your favourites without the delivery fee
+        on every order above ₹299.
+      </p>
+    </div>
+
+    <div class="offer-slide">
+      <span class="slide-tag">Limited Time</span>
+      <h2>Buy 1 Get 1 Free</h2>
+      <p>
+        Selected pizzas and burgers — order one,
+        receive another on the house.
+      </p>
+    </div>
+
+  </div>
+
+  <div class="slide-dots">
+    <span class="dot active" data-index="0"></span>
+    <span class="dot" data-index="1"></span>
+    <span class="dot" data-index="2"></span>
+  </div>
+
+</section>
+
+<section class="search-section">
+  <div class="search-box">
+    <span class="search-icon">🔍</span>
+    <input
+      type="text"
+      id="searchInput"
+      placeholder="Search food — biryani, pizza, burger, dessert..."
+      autocomplete="off"
+    />
+    <button class="search-clear" id="searchClear" onclick="clearSearch()" aria-label="Clear search">✕</button>
+  </div>
+  <div class="search-tags">
+    <span class="tag-label">Popular:</span>
+    <button class="tag-btn" onclick="quickSearch('pizza')">Pizza</button>
+    <button class="tag-btn" onclick="quickSearch('burger')">Burger</button>
+    <button class="tag-btn" onclick="quickSearch('biryani')">Biryani</button>
+    <button class="tag-btn" onclick="quickSearch('dessert')">Dessert</button>
+    <button class="tag-btn" onclick="quickSearch('salad')">Salad</button>
+    <button class="tag-btn" onclick="quickSearch('coffee')">Coffee</button>
+    <button class="tag-btn" onclick="quickSearch('thai')">Thai</button>
+    <button class="tag-btn" onclick="quickSearch('kebab')">Kebab</button>
+    <button class="tag-btn" onclick="quickSearch('noodles')">Noodles</button>
+  </div>
+</section>
+
+<div id="searchResults" class="search-results hidden"></div>
+
+<div id="restaurants"></div>
+
+</div>
+
+<div class="cart-panel" id="cartPanel">
+
+<h2>Your Cart</h2>
+
+<div id="cartItems"></div>
+
+<div class="total">
+  <span>Total</span>
+  <span>₹<span id="totalPrice">0</span></span>
+</div>
+
+<button class="pay-btn" onclick="payNow()">
+  Pay with Google Pay
+</button>
+
+<button class="clear-btn" onclick="clearCart()">
+  Clear Cart
+</button>
+
+</div>
+
+<div class="cart-backdrop" id="cartBackdrop" onclick="toggleCart()"></div>
+
+<div class="payment-modal" id="paymentModal">
+  <div class="payment-card">
+
+    <button class="payment-close" onclick="closePayment()" aria-label="Close">✕</button>
+
+    <div class="payment-header">
+      <span class="payment-badge">Secure UPI Payment</span>
+      <h2>Scan & Pay</h2>
+      <p>Complete your order via any UPI app</p>
+    </div>
+
+    <div class="scanner-frame">
+      <div class="scanner-corners"></div>
+      <div class="qr-wrap">
+        <img id="qrCode" src="" alt="UPI QR Code" />
+        <div class="scan-line"></div>
+      </div>
+      <div class="scanner-pulse"></div>
+    </div>
+
+    <div class="payment-details">
+      <div class="detail-row">
+        <span>Merchant</span>
+        <strong>Foodie Express</strong>
+      </div>
+      <div class="detail-row">
+        <span>UPI ID</span>
+        <strong id="payUpiId">mourimaofficial@okicici</strong>
+      </div>
+      <div class="detail-row amount-row">
+        <span>Amount to Pay</span>
+        <strong class="pay-amount">₹<span id="payAmount">0</span></strong>
+      </div>
+    </div>
+
+    <div class="upi-apps">
+      <span>Pay using</span>
+      <div class="app-icons">
+        <div class="app-icon gpay">GPay</div>
+        <div class="app-icon phonepe">PhonePe</div>
+        <div class="app-icon paytm">Paytm</div>
+      </div>
+    </div>
+
+    <button class="open-upi-btn" id="openUpiBtn" onclick="openUpiApp()">
+      Open UPI App on Phone
+    </button>
+
+    <p class="payment-note">
+      <span class="pulse-dot"></span>
+      Waiting for payment confirmation...
+    </p>
+
+  </div>
+</div>
+
+<div class="payment-backdrop" id="paymentBackdrop" onclick="closePayment()"></div>
+
+<script src="third.js"></script>
+
+</body>
+</html>
