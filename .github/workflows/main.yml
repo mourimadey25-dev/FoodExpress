@@ -1,30 +1,30 @@
-
-name: FoodExpress CI
+name: FoodExpress Azure Deployment
 
 on:
   push:
-  pull_request:
+    branches:
+      - main
+  workflow_dispatch:
 
 jobs:
-  check-project:
+  deploy:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Get source code
+      - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Check HTML file exists
+      - name: Verify website files
         run: |
-          if [ -f index.html ]; then
-            echo "index.html found"
-          else
-            echo "ERROR: index.html not found"
-            exit 1
-          fi
+          test -f index.html || (echo "ERROR: index.html not found in repository root" && exit 1)
+          echo "Website files found"
 
-      - name: Check project files
-        run: |
-          echo "Checking FoodExpress files..."
-          find . -maxdepth 3 -type f \
-            -not -path './.git/*'
-          echo "FoodExpress CI checks completed"
+      - name: Deploy to Azure Static Web Apps
+        uses: Azure/static-web-apps-deploy@v1
+        with:
+          azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN }}
+          action: upload
+          app_location: "/"
+          api_location: ""
+          output_location: ""
+          skip_app_build: true
