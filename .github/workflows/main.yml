@@ -1,3 +1,4 @@
+
 name: FoodExpress Azure Deployment
 
 on:
@@ -19,7 +20,7 @@ jobs:
 
       - name: Verify website files
         run: |
-          test -f index.html || (echo "ERROR: index.html not found in repository root" && exit 1)
+          test -f FoodExpress/index.html || (echo "ERROR: FoodExpress/index.html not found" && exit 1)
           echo "Website files found"
 
       - name: Deploy to Azure Static Web Apps
@@ -27,7 +28,7 @@ jobs:
         with:
           azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN_KIND_HILL_0043E3610 }}
           action: upload
-          app_location: "/github/workspace/FoodExpress"
+          app_location: "FoodExpress"
           api_location: ""
           output_location: ""
           skip_app_build: true
